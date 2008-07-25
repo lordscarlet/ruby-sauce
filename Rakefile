@@ -5,10 +5,10 @@ require 'date'
 
 GEM = "sauce"
 GEM_VERSION = "0.0.1"
-AUTHOR = "Your Name"
-EMAIL = "Your Email"
-HOMEPAGE = "http://example.com"
-SUMMARY = "A gem that provides..."
+AUTHOR = "Doug Moore"
+EMAIL = "douglas.moore@idledreams.net"
+HOMEPAGE = "http://idledreams.net/projects/ruby-sauce/"
+SUMMARY = "A gem that provides the ability to read SAUCE metadata from a file"
 
 spec = Gem::Specification.new do |s|
   s.name = GEM
