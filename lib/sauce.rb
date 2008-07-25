@@ -61,6 +61,10 @@ class Sauce
   end
   
   def date
+    Date.parse(date_raw)
+  end
+  
+  def date_raw
     @data[5]
   end
   
