@@ -7,6 +7,7 @@ class Sauce
   
   def initialize(filename)
     @data = Array.new
+    @comment_data = Array.new
     @has_sauce = false
 
     begin
@@ -17,12 +18,22 @@ class Sauce
 
       file.seek(-128, IO::SEEK_END)
       raw_sauce = file.read(128)
+      raise if raw_sauce !~ %r{^SAUCE}
+
+      @data = raw_sauce.unpack("A5 A2 A35 A20 A20 A8 V C C v v v v C C A22")
+
+      if @data[13] > 0 then
+        comments_size = 5 + (64 * @data[13])
+        file.seek( -128 - comments_size, IO::SEEK_END )
+        raw_comments = file.read( comments_size )
+
+        if raw_comments =~ %r{^COMNT} then
+          @comment_data = raw_comments.unpack("A5 " + ("A64" * @data[13]))
+        end
+      end
 
       file.close
 
-      raise if raw_sauce !~ "^SAUCE"
-
-      @data = raw_sauce.unpack("A5 A2 A35 A20 A20 A8 V C C v v v v C C A22")
       @has_sauce = true
     rescue => err
       
@@ -91,5 +102,9 @@ class Sauce
   
   def filler
     @data[15]
+  end
+
+  def comment_data
+    @comment_data
   end
 end
