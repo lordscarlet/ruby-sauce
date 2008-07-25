@@ -1,0 +1,4 @@
+TODO:
+Fix Rakefile with your name and contact info
+Make the date return an actual date object
+Make a to_s method that returns a basic pure-string sauce
