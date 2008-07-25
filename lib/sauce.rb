@@ -111,4 +111,16 @@ class Sauce
   def comment_data
     @comment_data
   end
+
+  def to_s
+    result = String.new
+
+    if @data[13] > 0 then
+         result += @comment_data.pack( "A5 " + ("A64" * @data[13]) )
+    end
+
+    result += @data.pack( "A5 A2 A35 A20 A20 A8 V C C v v v v C C A22" )
+
+    return result
+  end
 end
