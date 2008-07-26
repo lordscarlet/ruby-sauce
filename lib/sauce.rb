@@ -4,8 +4,8 @@ class Sauce
   #SAUCE_FILLER  = " " x 22
   #COMNT_ID      = "COMNT"
   
-  
   def initialize(filename)
+    @datatypes = %w{None Character Graphics Vector Sound BinaryText XBin Archive Executable}
     @data = Array.new
     @comment_data = Array.new
     @has_sauce = false
@@ -75,7 +75,11 @@ class Sauce
   def datatype_id
     @data[7]
   end
-  
+
+  def datatype
+    @datatypes[ @data[7] ]  
+  end
+
   def filetype_id
     @data[8]
   end
