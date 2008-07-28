@@ -5,53 +5,53 @@ class Sauce
   DATATYPES  = %w[None Character Graphics Vector Sound BinaryText XBin Archive Executable]
   FILETYPES  = {
     'None' => {
-      'filetypes' => [ 'Undefined' ],
-      'flags'     => [ 'None' ]
+      :filetypes => [ 'Undefined' ],
+      :flags     => [ 'None' ]
     },
     'Character' => {
-      'filetypes' => %w[ASCII ANSi ANSiMation RIP PCBoard Avatar HTML Source],
-      'flags'     => [ 'None', 'iCE Color' ],
-      'tinfo'     => [
-        [ { 'tinfo1' => 'Width', 'tinfo2' => 'Height' } ] * 3,
-        { 'tinfo1' => 'Width', 'tinfo2' => 'Height', 'tinfo3' => 'Colors' },
-        [ { 'tinfo1' => 'Width', 'tinfo2' => 'Height' } ] * 2
+      :filetypes => %w[ASCII ANSi ANSiMation RIP PCBoard Avatar HTML Source],
+      :flags     => [ 'None', 'iCE Color' ],
+      :tinfo     => [
+        [ { :tinfo1 => 'Width', :tinfo2 => 'Height' } ] * 3,
+          { :tinfo1 => 'Width', :tinfo2 => 'Height', :tinfo3 => 'Colors' },
+        [ { :tinfo1 => 'Width', :tinfo2 => 'Height' } ] * 2
       ]
     },
     'Graphics' => {
-      'filetypes' => %w[GIF PCX LBM/IFF TGA FLI FLC BMP GL DL WPG PNG JPG MPG AVI],
-      'flags'     => [ 'None' ],
-      'tinfo'     => [
-        {   'tinfo1' => 'Width',
-            'tinfo2' => 'Height',
-            'tinfo3' => 'Bits Per Pixel'
+      :filetypes => %w[GIF PCX LBM/IFF TGA FLI FLC BMP GL DL WPG PNG JPG MPG AVI],
+      :flags     => [ 'None' ],
+      :tinfo     => [
+        {   :tinfo1 => 'Width',
+            :tinfo2 => 'Height',
+            :tinfo3 => 'Bits Per Pixel'
         }
       ] * 14
     },
     'Vector' => {
-      'filetypes' => %w[DXF DWG WPG 3DS],
-      'flags'     => [ 'None' ]
+      :filetypes => %w[DXF DWG WPG 3DS],
+      :flags     => [ 'None' ]
     },
     'Sound' => {
-      'filetypes' => %w[MOD 669 STM S3M MTM FAR ULT AMF DMF OKT ROL CMF MIDI SADT VOC WAV SMP8 SMP8S SMP16 SMP16S PATCH8 PATCH16 XM HSC IT],
-      'flags'     => [ 'None' ],
-      'tinfo'     => [ [ {} ] * 16, [ { 'tinfo1' => 'Sampling Rate' } ] * 4 ]
+      :filetypes => %w[MOD 669 STM S3M MTM FAR ULT AMF DMF OKT ROL CMF MIDI SADT VOC WAV SMP8 SMP8S SMP16 SMP16S PATCH8 PATCH16 XM HSC IT],
+      :flags     => [ 'None' ],
+      :tinfo     => [ [ {} ] * 16, [ { :tinfo1 => 'Sampling Rate' } ] * 4 ]
     },
     'BinaryText' => {
-      'filetypes' => [ 'Undefined' ],
-      'flags'     => [ 'None', 'iCE Color' ]
+      :filetypes => [ 'Undefined' ],
+      :flags     => [ 'None', 'iCE Color' ]
     },
     'XBin' => {
-      'filetypes' => [ 'Undefined' ],
-      'flags'     => [ 'None' ],
-      'tinfo'     => [ { 'tinfo1' => 'Width', 'tinfo2' => 'Height' } ]
+      :filetypes => [ 'Undefined' ],
+      :flags     => [ 'None' ],
+      :tinfo     => [ { :tinfo1 => 'Width', :tinfo2 => 'Height' } ]
     },
     'Archive' => {
-      'filetypes' => %w[ZIP ARJ LZH ARC TAR ZOO RAR UC2 PAK SQZ],
-      'flags'     => [ 'None' ]
+      :filetypes => %w[ZIP ARJ LZH ARC TAR ZOO RAR UC2 PAK SQZ],
+      :flags     => [ 'None' ]
     },
     'Executable' => {
-      'filetypes' => [ 'Undefined' ],
-      'flags'     => [ 'None' ]
+      :filetypes => [ 'Undefined' ],
+      :flags     => [ 'None' ]
     }
   }
   
@@ -125,7 +125,7 @@ class Sauce
   end
   
   def datatype
-    DATATYPES[ datatype_id() ]  
+    DATATYPES[ datatype_id ]  
   end
   
   def filetype_id
@@ -133,7 +133,7 @@ class Sauce
   end
   
   def filetype
-    FILETYPES[ datatype() ]['filetypes'][ filetype_id() ]
+    FILETYPES[ datatype ][:filetypes][ filetype_id ]
   end
 
   def tinfo1
@@ -141,7 +141,7 @@ class Sauce
   end
 
   def tinfo1_name
-    FILETYPES[ datatype() ]['tinfo'][ filetype_id() ][ 'tinfo1' ]
+    FILETYPES[ datatype ][:tinfo][ filetype_id ][ :tinfo1 ]
   end   
 
   def tinfo2
@@ -149,7 +149,7 @@ class Sauce
   end
   
   def tinfo2_name
-    FILETYPES[ datatype() ]['tinfo'][ filetype_id() ][ 'tinfo2' ]
+    FILETYPES[ datatype ][:tinfo][ filetype_id ][ :tinfo2 ]
   end   
 
   def tinfo3
@@ -157,7 +157,7 @@ class Sauce
   end
   
   def tinfo3_name
-    FILETYPES[ datatype() ]['tinfo'][ filetype_id() ][ 'tinfo3' ]
+    FILETYPES[ datatype ][:tinfo][ filetype_id ][ :tinfo3 ]
   end   
 
   def tinfo4
@@ -165,7 +165,7 @@ class Sauce
   end
   
   def tinfo4_name
-    FILETYPES[ datatype() ]['tinfo'][ filetype_id() ][ 'tinfo4' ]
+    FILETYPES[ datatype ][:tinfo][ filetype_id ][ :tinfo4 ]
   end   
 
   def comments
@@ -177,7 +177,7 @@ class Sauce
   end
 
   def flags
-    FILETYPES[ datatype() ]['flags'][ flags_id() ]
+    FILETYPES[ datatype ][:flags][ flags_id ]
   end  
 
   def filler
