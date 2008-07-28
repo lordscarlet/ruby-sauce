@@ -1,43 +1,37 @@
 class Sauce
-  #SAUCE_ID      = "SAUCE"
-  #SAUCE_VERSION = "00"
-  #SAUCE_FILLER  = " " x 22
-  #COMNT_ID      = "COMNT"
+  DATATYPES = %w[None Character Graphics Vector Sound BinaryText XBin Archive Executable]
   
   def initialize(filename)
-    @datatypes = %w{None Character Graphics Vector Sound BinaryText XBin Archive Executable}
-    @data = Array.new
-    @comment_data = Array.new
-    @has_sauce = false
-
-    begin
-      file = File.new(filename, "r")
-      file.binmode
-
-      raise if file.stat.size < 128
-
-      file.seek(-128, IO::SEEK_END)
-      raw_sauce = file.read(128)
-      raise if raw_sauce !~ %r{^SAUCE}
-
-      @data = raw_sauce.unpack("A5 A2 A35 A20 A20 A8 V C C v v v v C C A22")
-
-      if @data[13] > 0 then
-        comments_size = 5 + (64 * @data[13])
-        file.seek( -128 - comments_size, IO::SEEK_END )
-        raw_comments = file.read( comments_size )
-
-        if raw_comments =~ %r{^COMNT} then
-          @comment_data = raw_comments.unpack("A5 " + ("A64" * @data[13]))
-        end
-      end
-
-      file.close
-
-      @has_sauce = true
-    rescue => err
+    @data         = []
+    @comment_data = []
+    @has_sauce    = false
+    
+    file = File.new(filename, "r")
+    file.binmode
+    
+    raise if file.stat.size < 128
+    
+    file.seek(-128, IO::SEEK_END)
+    raw_sauce = file.read(128)
+    raise if raw_sauce !~ /^SAUCE/
+    
+    @data = raw_sauce.unpack("A5 A2 A35 A20 A20 A8 V C C v v v v C C A22")
+    
+    if @data[13] > 0 then
+      comments_size = 5 + (64 * @data[13])
+      file.seek( -128 - comments_size, IO::SEEK_END )
+      raw_comments = file.read( comments_size )
       
-    end  
+      if raw_comments =~ /^COMNT/ then
+        @comment_data = raw_comments.unpack("A5 " + ("A64" * @data[13]))
+      end
+    end
+    
+    file.close
+    
+    @has_sauce = true
+  rescue => err
+    
   end
   
   def sauce_id
@@ -75,11 +69,11 @@ class Sauce
   def datatype_id
     @data[7]
   end
-
+  
   def datatype
-    @datatypes[ @data[7] ]  
+    DATATYPES[ @data[7] ]  
   end
-
+  
   def filetype_id
     @data[8]
   end
@@ -111,20 +105,16 @@ class Sauce
   def filler
     @data[15]
   end
-
+  
   def comment_data
     @comment_data
   end
-
+  
   def to_s
-    result = String.new
-
-    if @data[13] > 0 then
-         result += @comment_data.pack( "A5 " + ("A64" * @data[13]) )
-    end
-
+    result = ''
+    result += @comment_data.pack( "A5 " + ("A64" * @data[13]) ) if @data[13] > 0
     result += @data.pack( "A5 A2 A35 A20 A20 A8 V C C v v v v C C A22" )
-
+    
     return result
   end
 end
